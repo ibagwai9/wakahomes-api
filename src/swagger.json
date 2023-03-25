@@ -1,0 +1,861 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "SFTAS Zamfara API",
+    "description": "Brainstorm.ng Documentation for SFTAS Zamfara API",
+    "license": {
+      "name": "MIT License",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "contact": {
+      "name": "info@brainstorm.ng",
+      "email": "info@brainstorm.ng",
+      "url": "https://brainstorm.ng.com"
+    }
+  },
+  "paths": {
+    "/api/v1/users/create": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "User signup",
+        "description": "Create account for a new user",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "The user we want to create",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "User created successfully",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "User Login",
+        "description": "Login for an existing user",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "Login form data",
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/verify": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Verify User Token",
+        "description": "Endpoint to verify user authentication token",
+        "operationId": "verifyUserToken",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authentication Key",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "404": {
+            "description": "Invalid token"
+          }
+        }
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "List of users",
+        "description": "List of registed users",
+        "operationId": "verifyUserToken",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authentication Key",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/parcel": {
+      "post": {
+        "tags": [
+          "Parcels"
+        ],
+        "summary": "Create new parcel",
+        "description": "Create new aparcel",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "Parcel data",
+            "schema": {
+              "$ref": "#/definitions/Parcel"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "New Parcel created",
+            "schema": {
+              "$ref": "#/definitions/Parcel"
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/get/parcels/{query_type}/{parcel_id}": {
+      "get": {
+        "tags": [
+          "Parcels"
+        ],
+        "summary": "Select | List Parcels",
+        "description": "View Parcel",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authentication Key",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "query_type",
+            "in": "path",
+            "description": " one | many | search | delete ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "parcel_id",
+            "in": "path",
+            "description": "parcel_id | keyword ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Parcel"
+            }
+          }
+        },
+        "500": {
+          "description": "Server Error"
+        }
+      }
+    },
+    "/api/v1/paginate/parcels": {
+      "get": {
+        "tags": [
+          "Parcels"
+        ],
+        "summary": "Paginate Parcels",
+        "description": "View Parcel",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authentication Key",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "query_type",
+            "in": "query",
+            "description": " one | many | search ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": " id (if one) | keyword (if search) ",
+            "type": "string"
+          },
+          {
+            "name": "from",
+            "description": "Starting ID (from 1 to  99999999)",
+            "in": "query",
+            "default":0,
+            "properties": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "to",
+            "description": "Offset ID (from 1 to  99999999)",
+            "in": "query",
+            "default":0,
+            "properties": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "Maximum rows (number)",
+            "in": "query",
+            "default":0,
+            "properties": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Parcel"
+            }
+          }
+        },
+        "500": {
+          "description": "Server Error"
+        }
+      }
+    },
+    "/api/v1/structure": {
+      "post": {
+        "tags": [
+          "Structure"
+        ],
+        "summary": "Create new Structure",
+        "description": "Create new Structure",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "Structure data",
+            "schema": {
+              "$ref": "#/definitions/Structure"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "New Structure created",
+            "schema": {
+              "$ref": "#/definitions/Structure"
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/get/structures/{query_type}/{structure_id}": {
+      "get": {
+        "tags": [
+          "Structure"
+        ],
+        "summary": "Select | List Structures",
+        "description": "View Structure",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "Authentication Key",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "query_type",
+            "in": "path",
+            "description": " one | many | search | delete ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "structure_id",
+            "in": "path",
+            "description": "structure_id | keyword",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Structure"
+            }
+          }
+        },
+        "500": {
+          "description": "Server Error"
+        }
+      }
+    },
+    "/api/v1/get-polygons": {
+      "get": {
+        "tags": [
+          "Polygon"
+        ],
+        "summary": "Polygon data",
+        "description": "Get polygon",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "API Token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "query_type",
+            "description": "polygon | polygons",
+            "in": "query",
+            "properties": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "file_type",
+            "description": "parcel | structure",
+            "in": "query",
+            "properties": {
+              "type": "string",
+              "default": "parcel"
+            }
+          },
+          {
+            "name": "parcel_id",
+            "description": "If file_type is \"parcel\"  (ID from 1 to  99999999)",
+            "in": "query",
+            "properties": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "structure_id",
+            "description": "If file_type is \"structure\"  (ID from 1 to  99999999)",
+            "in": "query",
+            "properties": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "from",
+            "description": "Starting ID (from 1 to  99999999)",
+            "in": "query",
+            "properties": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "to",
+            "description": "Offset ID (from 1 to  99999999)",
+            "in": "query",
+            "properties": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "Maximum rows (number)",
+            "in": "query",
+            "properties": {
+              "type": "number"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "GeoJSON Data",
+            "schema": {
+              "$ref": "#/definitions/GeoJSON"
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/get/summary-report/{summary_type}": {
+      "get": {
+        "tags": [
+          "Polygon"
+        ],
+        "summary": "Data summary",
+        "description": "Get summary report for data collected",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "description": "API Token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "summary_type",
+            "in": "path",
+            "description": " summary_type  either of (lgas | wards) ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "GeoJSON Data",
+            "schema": {
+              "$ref": "#/definitions/Summary"
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ApiResponse": {
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "required": [
+        "name",
+        "email",
+        "phone",
+        "position",
+        "accessTo",
+        "role",
+        "department",
+        "accessToDept",
+        "password"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "phone": {
+          "type": "string"
+        },
+        "position": {
+          "type": "string"
+        },
+        "accessTo": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "department": {
+          "type": "string"
+        },
+        "accessToDept": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "Users": {
+      "type": "array",
+      "$ref": "#/definitions/User"
+    },
+    "Login": {
+      "required": [
+        "email",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "Parcel": {
+      "required": [
+        "query_type",
+        "geom",
+        "id",
+        "state",
+        "district",
+        "lga",
+        "ward",
+        "address",
+        "property_id_no",
+        "block_no",
+        "plot_no",
+        "street_name",
+        "owner_name",
+        "owner_type",
+        "owner_gender",
+        "telephone1",
+        "telephone2",
+        "occupancy_type",
+        "any_buildings",
+        "main_use",
+        "parcel_fenced",
+        "size_in_m2",
+        "doc_type",
+        "water",
+        "sewerage",
+        "electricity",
+        "street_lights",
+        "waste_disposal"
+      ],
+      "properties": {
+        "query_type": {
+          "type": "string",
+          "default": "create | update | delete"
+        },
+        "geom": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "id": {
+          "type": "number"
+        },
+        "state": {
+          "type": "string"
+        },
+        "district": {
+          "type": "string"
+        },
+        "lga": {
+          "type": "string"
+        },
+        "department": {
+          "type": "string"
+        },
+        "ward": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "property_id_no": {
+          "type": "string"
+        },
+        "block_no": {
+          "type": "string"
+        },
+        "plot_no": {
+          "type": "string"
+        },
+        "street_name": {
+          "type": "string"
+        },
+        "owner_name": {
+          "type": "string"
+        },
+        "owner_type": {
+          "type": "string"
+        },
+        "owner_gender": {
+          "type": "string"
+        },
+        "telephone1": {
+          "type": "string"
+        },
+        "telephone2": {
+          "type": "string"
+        },
+        "occupancy_type": {
+          "type": "string"
+        },
+        "any_buildings": {
+          "type": "string"
+        },
+        "main_use": {
+          "type": "string"
+        },
+        "parcel_fenced": {
+          "type": "string"
+        },
+        "size_in_m2": {
+          "type": "string"
+        },
+        "doc_type": {
+          "type": "string"
+        },
+        "water": {
+          "type": "string"
+        },
+        "sewerage": {
+          "type": "string"
+        },
+        "electricity": {
+          "type": "string"
+        },
+        "street_lights": {
+          "type": "string"
+        },
+        "waste_disposal": {
+          "type": "string"
+        }
+      }
+    },
+    "Structure": {
+      "required": [
+        "query_type",
+        "id",
+        "parcel_id",
+        "parent_id",
+        "geom",
+        "finished",
+        "level_of_completion",
+        "year_completed",
+        "main_use",
+        "residential_type",
+        "wall_material",
+        "roof_covering",
+        "roof_type",
+        "no_floors",
+        "no_of_occupants",
+        "property_id_no",
+        "shape_length",
+        "shape_area"
+      ],
+      "properties": {
+        "query_type": {
+          "type": "string"
+        },
+        "id": {
+          "type": "number"
+        },
+        "parcel_id": {
+          "type": "number"
+        },
+        "parent_id": {
+          "type": "number"
+        },
+        "geom": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "finished": {
+          "type": "string"
+        },
+        "level_of_completion": {
+          "type": "string"
+        },
+        "year_completed": {
+          "type": "string"
+        },
+        "main_use": {
+          "type": "string"
+        },
+        "residential_type": {
+          "type": "string"
+        },
+        "wall_material": {
+          "type": "string"
+        },
+        "roof_covering": {
+          "type": "string"
+        },
+        "roof_type": {
+          "type": "string"
+        },
+        "no_floors": {
+          "type": "string"
+        },
+        "no_of_occupants": {
+          "type": "string"
+        },
+        "owner_name": {
+          "type": "string"
+        },
+        "owner_type": {
+          "type": "string"
+        },
+        "owner_gender": {
+          "type": "string"
+        },
+        "telephone1": {
+          "type": "string"
+        },
+        "telephone2": {
+          "type": "string"
+        },
+        "property_id_no": {
+          "type": "string"
+        },
+        "shape_length": {
+          "type": "string"
+        },
+        "shape_area": {
+          "type": "string"
+        }
+      }
+    },
+    "GeoJSON": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "default": "FeatureCollection"
+        },
+        "Features": {
+          "type": "array",
+          "items": {
+            "properties": {
+              "type": {
+                "type": "string",
+                "default": "Feature"
+              },
+              "geometry": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "default": "Polygon"
+                  },
+                  "coodinates": {
+                    "type": "array",
+                    "default": [
+                      [
+                        8.122122,
+                        12.157555
+                      ],
+                      [
+                        8.122122,
+                        12.703929
+                      ]
+                    ]
+                  }
+                }
+              },
+              "properties": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "default": 1
+                  },
+                  "...": {
+                    "type": "string",
+                    "default": "..."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Summary": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "default": [
+              {
+                "lga_name": "AJINGI",
+                "no_of_buildings": "0"
+              },
+              {
+                "lga_name": "ALBASU",
+                "no_of_buildings": "0"
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "host": "yge.wvi.mybluehost.me/sftas/zamfara",
+  "basePath": "",
+  "schemes": [
+    "https"
+  ]
+}
