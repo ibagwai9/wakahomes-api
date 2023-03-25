@@ -1,7 +1,7 @@
 const config  = require("../config/config");
 
 const user = require("../controllers/user");
-const { api, protected } = config;
+const { api, requireAuth } = config;
 
 module.exports = (app) => {
   // create a new user
@@ -12,19 +12,19 @@ module.exports = (app) => {
   // user login
   app.get(`${api}/users/get-token`,user.getToken);
 
-  app.get(`${api}/user/verify-token`,protected,user.verifyUserToken);
+  app.get(`${api}/user/verify-token`,requireAuth,user.verifyUserToken);
 
   //retrieve all users
-  app.get(`${api}/users`,protected, user.findAllUsers);
+  app.get(`${api}/users`,requireAuth, user.findAllUsers);
 
   // retrieve user by id
-  app.get(`${api}/users/:userId`,protected,user.findById);
+  app.get(`${api}/users/:userId`,requireAuth,user.findById);
 
   // update a user with id
-  app.post(`${api}/users/update`, protected, user.update);
+  app.post(`${api}/users/update`, requireAuth, user.update);
   // delete a user
-  app.delete(`${api}/users/:userId`,protected,  user.deleteUser);
-  app.post(`${api}/create/user`, protected, user.createUser);
+  app.delete(`${api}/users/:userId`,requireAuth,  user.deleteUser);
+  app.post(`${api}/create/user`, requireAuth, user.createUser);
 
   app.get("*", function (req, res) {
     res.status(404).json("<h1>404</h1><p>Page not found!</p>");
