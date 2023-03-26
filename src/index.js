@@ -18,8 +18,7 @@ app.use(
   express.json({ limit: "500mb", extended: true, parameterLimit: 500000 })
 );
 
-let port = process.env.PORT || 5000; // set the view engine to ejs
-app.set("view engine", "ejs");
+let port = process.env.PORT || 8082; 
 
 // make express look in the public directory for assets (css/js/img)
 app.use(express.static(__dirname + "/public"));
@@ -35,7 +34,7 @@ models.sequelize.sync().then(() => {
 // passport middleware
 app.use(passport.initialize());
 app.use(
-  '/api/v1/docs',
+  '/docs',
   swaggerUi.serve,
   swaggerUi.setup(swaggerDocument, { explorer: true }),
 );
