@@ -9,7 +9,7 @@ cloudinary.config({
 });
 
 const cloudRoute = (app) => {
-  app.post(`${api}/cloud/upload`, (req, res) => {
+  app.post(`/cloud/upload`, (req, res) => {
     const image = req.body;
     console.log(image);
     cloudinary.uploader.upload(`${image}`, {
