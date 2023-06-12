@@ -21,8 +21,10 @@
     "babel-cli": "6.26.0",
     "babel-preset-env": "1.7.0",
     "bcryptjs": "^2.4.3",
-    "cloudinary": "^1.22.0",
+    "cloudinary": "^1.35.0",
+    "cloudinary-react": "^1.8.1",
     "cluster": "^0.7.7",
+    "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "ejs": "^2.6.1",
@@ -30,6 +32,7 @@
     "eslint": "^5.16.0",
     "express": "^4.16.4",
     "forever-monitor": "^3.0.3",
+    "googleapis": "^118.0.0",
     "http-errors": "~1.6.2",
     "install": "^0.13.0",
     "jsonwebtoken": "^8.5.1",
@@ -40,14 +43,16 @@
     "nodemon": "^2.0.7",
     "npm": "^7.18.1",
     "passport": "^0.4.0",
+    "passport-facebook": "^3.0.0",
+    "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "pg": "^8.3.3",
     "pug": "^3.0.2",
     "sequelize": "^5.7.1",
-    "validator": "^10.11.0",
     "swagger-jsdoc": "^6.2.1",
-    "swagger-ui-express": "^4.4.0"
+    "swagger-ui-express": "^4.4.0",
+    "validator": "^10.11.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
