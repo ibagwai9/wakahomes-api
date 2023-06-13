@@ -92,7 +92,7 @@ module.exports = (app) => {
 
 
 
-  app.get("*", function (req, res) {
+  app.get("*",  (req, res)=> {
     res.status(404).json("<h1>404</h1><p>Page not found!</p>");
   });
 };

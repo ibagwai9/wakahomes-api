@@ -1,15 +1,15 @@
 const  db = require ("../models");
 
 const propertiesQueries  = (data, success=f=>f, error=f=>f) => {
-  const {id=null,listed_by='1',address=null,title=null, category=null, country=null,state=null,lga=null,district=null,price=null,is_for=null,type=null,description=null,status='listed',polygon=null,point=null,
-    size=null,bedrooms='0',bathrooms='0',year_built='0',query_type='select'} = data;
+  const {id=null,auth_id='1',address=null,title=null, category=null, country=null,state=null,lga=null,district=null,price=null,is_for=null,type=null,description=null,status='listed',polygon=null,point=null,
+    size=null,bedrooms=null,bathrooms=null,year_built='0',query_type='select'} = data;
   db.sequelize
     .query(
-      `SELECT * FROM  public.__property_queries('${query_type}',:id,:listed_by,:title,:category,:address,:country,:state,:lga,:district,:size,:bedrooms,:bathrooms,:year_built,:price,:is_for,:type,:description,:status,:polygon,:point)`,
+      `SELECT * FROM  public.__property_queries('${query_type}',:id,:auth_id,:title,:category,:address,:country,:state,:lga,:district,:size,:bedrooms,:bathrooms,:year_built,:price,:is_for,:type,:description,:status,:polygon,:point)`,
       {
         replacements:{
           id:id?id:null,
-          listed_by,
+          auth_id,
           title,
           category,
           address,
@@ -18,8 +18,8 @@ const propertiesQueries  = (data, success=f=>f, error=f=>f) => {
           lga,
           district,
           size,
-          bedrooms:bedrooms?bedrooms:null,
-          bathrooms:bedrooms?bedrooms:null,
+          bedrooms,
+          bathrooms,
           year_built:year_built?year_built:null,
           price:price?price:null,
           is_for:is_for?is_for:'SALE',
@@ -48,7 +48,7 @@ module.exports.postProperties = (req, res) => {
   const { query_type = 'select' } = req.query;
   // console.log(req.body);
   propertiesQueries(
-    Object.assign(req.body, { query_type }),
+    Object.assign(req.body, { query_type }, {auth_id:req.user.id}),
     (data) => {
       console.log({ data });
       req.body.media.forEach((item, idx) => {

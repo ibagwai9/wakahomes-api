@@ -94,7 +94,7 @@ module.exports.verifyUserToken = (req, res, next) => {
                 success: true,
                 data: { user, business:business[0][0] }
               });
-             return next();
+             return next(null,user);
             })
             .error(err => {
               console.log({
@@ -273,14 +273,15 @@ module.exports.findById = (req, res) => {
 
   // User.findAll({ where: { id } })
   db.sequelize
-    .query(`SELECT * FROM  public."Users" `)
+    .query(`SELECT * FROM  public."Users" WHERE id = ${id}`)
     .then((user) => {
       if (!user.length) {
-        return res.json({ msg: "user not found" });
+         res.json({ msg: "user not found" });
+      }else{
+        res.json({ user:user[0], success: true });   
       }
-      res.json({ user });
     })
-    .catch((err) => res.status(500).json({ err }));
+    .catch((err) => res.status(500).json({ error:err, success:false }));
 };
 
 // update a user's info
