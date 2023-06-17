@@ -1,11 +1,10 @@
 const  db = require ("../models");
 
 const propertiesQueries  = (data, success=f=>f, error=f=>f) => {
-  const {id=null,auth_id='1',address=null,title=null, category=null, country=null,state=null,lga=null,district=null,price=null,is_for=null,type=null,description=null,status='listed',polygon=null,point=null,
-    size=null,bedrooms=null,bathrooms=null,year_built='0',query_type='select'} = data;
+  const {id=null,auth_id=null,title=null,category=null,address=null,country=null,state=null,lga=null,district=null,size=null,bedrooms=null,bathrooms=null,year_built=null,price=null,second_price=null,rent_cost=null,is_for=null,floor_area=null,no_of_floors=null,property_type=null,description=null,amenities=null,rent_frequency=null,available_from=null,furnished=null,property_condition=null,parking_spaces=null,status=null,polygon=null,point=null,query_type='select'} = data;
   db.sequelize
     .query(
-      `SELECT * FROM  public.__property_queries('${query_type}',:id,:auth_id,:title,:category,:address,:country,:state,:lga,:district,:size,:bedrooms,:bathrooms,:year_built,:price,:is_for,:type,:description,:status,:polygon,:point)`,
+      `SELECT * FROM  public.__property_queries('${query_type}',:id,:auth_id,:title,:category,:address,:country,:state,:lga,:district,:bedrooms,:bathrooms,:year_built,:price,:second_price,:rent_cost,:is_for,:floor_area,:no_of_floors,:property_type,:description,:amenities,:rent_frequency,:available_from,:furnished,:property_condition,:parking_spaces,:status,:polygon,:point)`,
       {
         replacements:{
           id:id?id:null,
@@ -17,17 +16,26 @@ const propertiesQueries  = (data, success=f=>f, error=f=>f) => {
           state,
           lga,
           district,
-          size,
           bedrooms,
           bathrooms,
-          year_built:year_built?year_built:null,
-          price:price?price:null,
-          is_for:is_for?is_for:'SALE',
-          type,
+          year_built,
+          price,
+          second_price,
+          rent_cost,
+          is_for,
+          floor_area,
+          no_of_floors,
+          property_type,
           description,
-          status:status?status:'listed',
-          polygon:polygon?polygon:null,
-          point:point?point:null
+          amenities,
+          rent_frequency,
+          available_from,
+          furnished,
+          property_condition,
+          parking_spaces,
+          status,
+          polygon,
+          point
         }
       }
     )
@@ -40,7 +48,12 @@ const propertiesQueries  = (data, success=f=>f, error=f=>f) => {
 };
 
 module.exports.getProperties  = (req, res) => {
-  propertiesQueries(req.query,(resp)=>res.json({ success: true, data:resp[0]}),
+  propertiesQueries(Object(req.query,{auth_id:req.user.id }),(resp)=>res.json({ success: true, data:resp[0]}),
+     (error) => res.status(500).json({ success: false, error }));
+};
+
+module.exports.getPubProperties  = (req, res) => {
+  propertiesQueries(Object.assign(req.query,{auth_id:null}),(resp)=>res.json({ success: true, data:resp[0]}),
      (error) => res.status(500).json({ success: false, error }));
 };
 
